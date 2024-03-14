@@ -25,16 +25,27 @@ function buttonClick(event) {
     case "backspace":
       backspace();
       break;
-      // add result to expression as a starting point of expression is empty
-      case 'addition':
-      case 'subtraction':
-      case 'multiplication':
-      case 'division':
-        if (expression == ' && result ' == empty) {
-          startFromResult(value);
-        } else if (expression != '' && !isLastCharOperator()) {
-          addValue(value);
-        }
+    // add result to expression as a starting point of expression is empty
+    case "addition":
+    case "subtraction":
+    case "multiplication":
+    case "division":
+      if ((expression == " && result ") == empty) {
+        startFromResult(value);
+      } else if (expression != "" && !isLastCharOperator()) {
+        addValue(value);
+      }
+        break;
+      case 'submit':
+          submit();
+        break;
+      case 'negate':
+          negate();
+        break;
+      case 'mod':
+          percentage();
+        break;
+
   }
 
   updateDisplay(expression, result);
@@ -52,16 +63,54 @@ function updateDisplay(expression, result) {
 }
 
 function clear() {
-  expression = '';
-  result = '';
+  expression = "";
+  result = "";
 }
 
 function backspace() {
-  expression = expression.slice(0, -1)
+  expression = expression.slice(0, -1);
 }
 
 function isLastCharOperator() {
   return isNaN(parseInt(expression.slice(-1)));
 }
 
-function startFromResult(value)
+function startFromResult(value) {
+  expression += result + value;
+}
+
+function submit() {
+  result = evaluateExpression ();
+  expression = '';
+}
+
+// in built eval function 
+function evaluateExpression() {
+  const evalResult = eval(expression);
+  //checks evalresult isNan or infinite returns a blank space e.g. 'empty string'
+  return isNan(evalResult) || !isFinite(evalResult);
+  ? ' '
+  : evalResult < 1 
+  ? parseFloat(evalResult.toFixed(10))
+  : parseFloat(evalResult.toFixed(2));
+}
+
+function negate() {
+  if (expression === '' && result !== '') {
+    result = -result;
+  } else if (!expression.startsWith('-') && expression !== '') {
+    expression = '-' + expression;
+    // removes minus sign from negative expression
+  } else if (expression.startsWith('-')) {
+    expression = expression.slice(1);
+  }
+}
+
+function percentage() {
+  // evauate the epression of only the first number 
+  if (expression != '') {
+    result = calculateExpression();
+    expression = '';
+    if ()
+  }
+}
